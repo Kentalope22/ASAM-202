@@ -153,7 +153,7 @@ const questions = {
             "practical survival items: food, water, medicene and whatnot will be important if you want to survive the journey.": [2, ["Bitter Sweet"]],
             "family, valuables and survival items: better to have as much of everything as you can.": [2, ["Left with Nothing"]]
         },
-        "image": "images/question_1.jpg"
+        "image": "images/imageQ1.png"
     },
 
 
