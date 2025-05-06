@@ -166,7 +166,7 @@ const questions = {
             "stay with her yourself: the rest of your family can go on without you, your grandma might be as good as dead on her own. this way you can at least try to make the trek with her while everyone else goes on ahead.": [3, ["Perished on the Way"]],
             "take her with you: it will make your trek much more difficult but could you really live with yourself if you abandoned her?": [3, ["Never Left"]]
         },
-        "image": "images/imageQ2.jpg"
+        "image": "images/imageQ2.png"
     },
 
     // question 3
@@ -178,7 +178,7 @@ const questions = {
             "take the final spot: if they can only take in one more person then it should be you. you've been making the decisions thus far and have the best chance of survival. you tell yourself the others will find something without you.": [4, ["Left with Nothing"]],
     
         },
-        "image": "images/imageQ3.jpg"
+        "image": "images/imageQ3.png"
     },
     
     // question 4
@@ -190,7 +190,7 @@ const questions = {
             "keep just what is needed to survive the journey: whats the use of anything else if you can't even survive the journey over? ": [5, ["Bitter Sweet"]],
             "throw away everything: the captain has already taken many extra people. this is for the good of everyone around you, even if it means you have nothing but your papers left with you, you must do all you can for the common good.": [5, ["Left with Nothing"]],
         },
-        "image": "images/imageQ4.jpg"
+        "image": "images/imageQ4.png"
     },
 
     // question 5
@@ -202,7 +202,7 @@ const questions = {
             "jump into the ocean: you are quite literally a sitting duck but hopefully the pirates see you as too much of a hassle to care for. all that's left is to survive swimming in the ocean.": [6, ["Bitter Sweet"]],
             "give them everything: if you give them everything then maybe they will leave you in peace.": [6, ["Left with Nothing"]],
         },
-        "image": "images/imageQ5.avif"
+        "image": "images/imageQ5.png"
     },
 
     // question 6
@@ -214,7 +214,7 @@ const questions = {
             "eat your shoe: the quickest option is to eat anything you had of leather, like a shoe. its tasteless and tough but at least it's safer than most options": [7, ["Bitter Sweet"]],
             "eat the bird: raw meat is better than starvation. better to deal with the consequences of eating raw meat than continue starving.": [7, ["Left with Nothing"]],
         },
-        "image": "images/imageQ6.jpg"
+        "image": "images/imageQ6.png"
     },
 
     // question 7
@@ -226,7 +226,7 @@ const questions = {
             "split family: while waiting in the camps, not all of your family gets a visa. is it worth splitting up your family to allow some members to go to a better life while leaving others behind.": [8, ["Bitter Sweet"]],
             "get yourself out: it's not a decision you like making but as quickly as you can you need to get out of here. maybe once you get your visa you can work on helping the rest of your family later.": [8, ["Left with Nothing"]],
         },
-        "image": "images/imageQ7.jpg"
+        "image": "images/imageQ7.png"
     },
 }
 
