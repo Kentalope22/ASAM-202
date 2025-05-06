@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script defer src="script.js"></script>
+        <link rel="stylesheet" href="quiz.css"/>
+        <link rel="icon" type="image/png" href="images/app_icon.png">
+        <title>NebuLuv</title>
+  </head>
+
+  <body onload="document.getElementById('start-button').click();">
+    <div class = "container">
+        <button id="start-button" class="btn start-btn"> Start Quiz </button>
+        <a href="images/lebron.png">
+            <img class="logo" src="images/app_icon.png" alt="Logo Image"/>
+        </a>
+        <div id="question-container" class="hide">
+            <h2 id="question"></h2>
+            <img id="question-image" src="" alt="Question Image" style="max-width: 100%; display: none;" />
+            <div id = "answer-buttons" class="btn-grid">
+                <!-- Answer holder -->
+            </div>
+        </div>
+        <div id="result-container" class="hide">
+            <p id="result-text"></p>
+            <button id="start-photo-btn" class="btn"> Find your future NebuLuver on your most suitable planet!</button>
+        </div>
+
+        <!-- match maker section -->
+         <div id="photo-container" class="hide">
+            <img id="match-photo" src="" alt="Match Photo" style="max-width: 100%; border-radius: 10px;" />
+            <div id="photo-description" style="text-align: left; margin: 10px 0; color: white;"></div>
+            <div class="photo-controls">
+                <!-- yes button -->
+                <button id="yes-button" class="btn"> ❤️ </button>
+                <!-- no but>ton -->
+                <button  id="no-button" class="btn"> ❌ </button>
+            </div>
+            <p id="photo-message" class="hide"></p>
+            <div class="controls">
+            <a href="index.html" id="restart-button" class="btn start-btn">
+                Don't like your pick? Play again!
+            </a> 
+        </div>
+    </div>
+   </body>
+</html>
