@@ -9,17 +9,17 @@ const resultTextElement = document.getElementById('result-text');
 let currentQuestionIndex = 1;
 
 const planets = {
-    "Mars"     : 0,    // Adventurous
-    "Venus"    : 0,    // Analytical
-    "Jupiter"  : 0,    // Optimistic
-    "Uranus"   : 0,    // Romantic
+    "Never Left"     : 0,    // Sacrificed little to nothing
+    "Perished on the Way"    : 0,    // Sacrificed not enough
+    "Bitter Sweet"  : 0,    // Sacrificed enough but still left scars from the journey
+    "Left with Nothing"   : 0,    // Sacrificed almost everything, left with nothing
 };
 
 const planetDescriptions = {
-    "Mars": "You're adventurous and bold! Like Mars, you have a fiery spirit and thrive on challenges. You're not afraid to take risks and explore uncharted territories. Your courage and determination make you a natural leader in any expedition.",
-    "Venus": "You're analytical and thoughtful! Like Venus, you have a scientific mind and love to learn. You approach life with curiosity and wisdom, always seeking to understand the deeper meaning behind things. Your intellectual nature makes you a valuable guide and teacher.",
-    "Jupiter": "You're optimistic and spontaneous! Like Jupiter, you radiate positive energy and see the bright side of every situation. You embrace life with enthusiasm and aren't afraid to take chances. Your joyful spirit lifts those around you and makes any journey more enjoyable.",
-    "Uranus": "You're romantic and mysterious! Like Uranus, you have a unique perspective and approach life with creativity. You value meaningful connections and see beauty in the unexpected. Your dreamy nature helps you find wonder in the cosmos of everyday life."
+    "Never Left": "you fall asleep at in the camps and wake up realizing that you never left Vietnam. you were unable to make many of the tough choices that were integral to the survival of many immigrants. you are then sent away to re-education camps where death is likely.",
+    "Perished on the Way": "you make it much of the journey only to perish on the way. whether that be by pirates, drowning, starvation or something else, your decisions were wreckless and still unable to give up enough.",
+    "Bitter Sweet": "one way or another you receive your visa and are now working towards the American dream. while your future is hopeful, you still have the scars and trauma from the weight of your decisions on the journey here.",
+    "Left with Nothing": "you arrive to the states alone with nothing but your identification papers and the clothes on your back. you gave up on everything and prioritized survival over all else and it paid off but with no one and nothing to your name, you may question if this truly was worth it."
 };
 
 startButton.addEventListener('click', startQuiz);
@@ -112,106 +112,46 @@ function showResults() {
     questionContainerElement.classList.add('hide');
     resultContainerElement.classList.remove('hide');
     
-    //Find ALL planets with max score 
+    // Find ALL planets with max score 
     let maxScore = Math.max(...Object.values(planets));
-    let dominantPlanets = [];  //stores array of planets
+    let dominantPlanets = [];  // stores array of planets with max score
     
     for (const planet in planets) {
         if (planets[planet] === maxScore) {
-            dominantPlanets.push(planet); //Collect all max planets
+            dominantPlanets.push(planet);
         }
     }
     
-    // Display results
-    let resultText = "";
+    // Randomly select one planet if there's a tie
+    let selectedPlanet;
     if (dominantPlanets.length > 1) {
-        resultText = `Your cosmic personality is a blend of ${dominantPlanets.join(' and ')}!\n\n`;
-        dominantPlanets.forEach(planet => {
-            resultText += `${planet}: ${planetDescriptions[planet]}\n\n`;
-        });
+        const randomIndex = Math.floor(Math.random() * dominantPlanets.length);
+        selectedPlanet = dominantPlanets[randomIndex];
     } else {
-        resultText = `Your cosmic personality aligns with ${dominantPlanets[0]}!\n\n${planetDescriptions[dominantPlanets[0]]}`;
+        selectedPlanet = dominantPlanets[0];
     }
 
-    //Store array of planets
-    window.dominantPlanets = dominantPlanets;
+    // Display the single result
+    let resultText = `${selectedPlanet}!\n\n${planetDescriptions[selectedPlanet]}`;
+
+    // Store the selected planet
+    window.dominantPlanets = [selectedPlanet]; // Now always an array with one item
     window.currentPlanetIndex = 0;
 
     resultTextElement.innerText = resultText;
     document.getElementById('start-photo-btn').addEventListener('click', startPhotoReveal);
 }
 
-// tracker for our current photo and planet index
-let currentPhotoIndex = 0;
-let currentPlanetIndex = 0;
-
-function startPhotoReveal() {
-    resultContainerElement.classList.add('hide');
-    document.getElementById('photo-container').classList.remove('hide');
-
-    currentPhotoIndex = 0;
-    currentPlanetIndex = 0;
-    showNextPhoto();
-    document.getElementById('yes-button').addEventListener('click', handleYes);
-    document.getElementById('no-button').addEventListener('click', handleNo);
-}
-
-// function to show the next photos
-function showNextPhoto() {
-    const currentPlanet = window.dominantPlanets[currentPlanetIndex];
-    const photos = planetPhotos[currentPlanet];
-    const photoElement = document.getElementById('match-photo');
-    const descriptionElement = document.getElementById('photo-description');
-
-    // checking for if no more photos available
-    if(currentPhotoIndex < photos.length) {
-        photoElement.src = photos[currentPhotoIndex].src;
-        photoElement.style.display = "block";
-        // update description
-        descriptionElement.innerText = photos[currentPhotoIndex].description;
-        descriptionElement.style.display = "block";
-    }
-
-    else{ // no more photos
-        currentPlanetIndex++;
-        if(currentPlanetIndex < window.dominantPlanets.length){
-            currentPhotoIndex = 0;
-            showNextPhoto();
-        }
-        else{//no more planets or photos
-            document.getElementById('photo-message').innerText = "picky dum dum, you don't deserve anyone";
-            document.getElementById('photo-message').classList.remove('hide');
-            document.querySelector('.photo-controls').classList.add('hide');
-            document.getElementById('photo-description').classList.add('hide');
-        }
-        
-
-    }
-}
-// if yes, match made
-function handleYes() {
-    document.querySelector('.photo-controls').classList.add('hide');
-
-    // Set and show the congratulatory message.
-    const photoMessage = document.getElementById('photo-message');
-    photoMessage.innerText = "Congrats! You have officially found your alien soulmate!";
-    photoMessage.classList.remove('hide');
-}
-// no means to go to the next one
-function handleNo() {
-   currentPhotoIndex++;
-   showNextPhoto();
-}
 
 const questions = {
     // question 1
     "1": {
-        "question_text": "Imagine you're about to go on a space expedition. Which mission resonates with you the most?",
+        "question_text": "It's early in the morning and you wake up to the panic of your family. Communist forces have ceased the country and must hurry as the nations allies are only evacuating a limited number of people. You start by gathering belonings, what do you prioritize most?",
         "question_choices": {
-            "The Red Frontier: a daring expedition full of challenges and bold adventures": [2, ["Mars"]],
-            "The Enchanted Orbit: a mellow expedition with a touch of mystery and unexpectedness, while enjoying the scenery": [2, ["Uranus"]],
-            "The Timeless Voyage: an educational expedition, using the opportunity to learn something": [2, ["Venus"]],
-            "The Radiant Journey: focusing on having a good time through spontaneous activities": [2, ["Jupiter"]]
+            "family: what is the point of survival if your loved ones do not make it with you. do you choose humanity or survival?": [2, ["Never Left"]],
+            "gold, jewlery and heirlooms: material wealth and things of sentimental value will be integral for building your new life and may come in handy on the way.": [2, ["Perished on the Way"]],
+            "practical survival items: food, water, medicene and whatnot will be important if you want to survive the journey.": [2, ["Bitter Sweet"]],
+            "family, valuables and survival items: better to have as much of everything as you can.": [2, ["Left with Nothing"]]
         },
         "image": "images/question_1.jpg"
     },
@@ -219,136 +159,78 @@ const questions = {
 
     // question 2
     "2": {
-        "question_text": "While traversing through a star system, you come across a mysterious nebula pulsing with energy. How do you interact with it?",
+        "question_text": "as soon as you finish packing, you rush to evacuate with your family and belongings but along the way your grandma falls in the rush to flee and ends up spraining her ankle. there is still a long trek ahead so she tells you to hurry on without her but it's your decision.",
         "question_choices": {
-            "Reflective Sage: You stop to think about the deeper meanings and lessons the nebula might be able to offer.": [3, ["Venus"]],
-            "Bold Explorer: You leap into the unknown, being eager and experienced to experience its raw energy and want to uncover its secrets.": [3, ["Mars"]],
-            "Overthink Genie:  You deeply think about its energy and wonder what it potentially has to benefit you. ": [3, ["Uranus"]],
-            "Hopeful Dreamer: You see the nebula as a symbol of infinite possibilities and want to embrace the encounter with optimism.": [3, ["Jupiter"]]
+            "continue on without her: You have other family to prioritize and now that she is injured she will slow you down even more. hopefully someone will come along to help her and you can reunite later.": [3, ["Left with Nothing"]],
+            "leave her behind but first make sure she will be okay: she might slow you down too much if you take her with you but you can't just leave her there to suffer and potentially perish.": [3, ["Bitter Sweet"]],
+            "stay with her yourself: the rest of your family can go on without you, your grandma might be as good as dead on her own. this way you can at least try to make the trek with her while everyone else goes on ahead.": [3, ["Perished on the Way"]],
+            "take her with you: it will make your trek much more difficult but could you really live with yourself if you abandoned her?": [3, ["Never Left"]]
         },
         "image": "images/question_2.jpg"
     },
 
     // question 3
     "3": {
-        "question_text": "Through your journey through space, your spaceship suddenly encounters a mysterious cosmic rift. How do you feel?",
+        "question_text": "you make it to the evacuation only to find that they have already taken more refugees than they were supposed to and barely have enough room to take one more person as is.",
         "question_choices": {
-            "Double Dare: You enter the rift, having the only thought in your mind to move forward!": [4, ["Jupiter"]],
-            "Spiriter: You've been waiting for something like this to happen, driven and excited by the thrill of what might be in there.": [4, ["Mars"]],
-            "Future Prayer: You want to embrace the rift, thinking of it as a symbol of boundless opportunity and renewal. Confident that it will hold positive changes for your future.": [4, ["Uranus"]],
-            "Thoughtful Learner: You're excited to use this opportunity as a lesson to learn what's inside.": [4, ["Venus"]],
+            "beg: surely they can make even just a little bit more room for a few more people. plead with them to take as much of your family as possible, it likely won't work and maybe someone takes the final spot while you beg but that's a chance you're willing to take.": [4, ["Never Left"]],
+            "trust a smuggler: oppurtunistic and somewhat shady people are capitalizing on the scenario and offering to take your whole family in exchange for all of your valuables. everyone could survive and stay togther but it's significantly more risky and you don't know if you can trust this person.": [4, ["Perished on the Way"]],
+            "take the final spot: if they can only take in one more person then it should be you. you've been making the decisions thus far and have the best chance of survival. you tell yourself the others will find something without you.": [4, ["Left with Nothing"]],
+    
         },
         "image": "images/question_3.jpg"
     },
     
     // question 4
      "4": {
-        "question_text": "Your co-astronauts have some conflict amongst each other. How do you resolve it?",
+        "question_text": "by whichever means you are now on a boat on the way to a new country but challenges are still ahead of you. the boat you've made it onto now carries double or even triple the amount that is was made to. as weather conditions worsen, your captain has ordered that everyone throw belongings overboard to reduce the weight of the boat and risk of sinking in harsh conditions.",
         "question_choices": {
-            "Instigator: You join in, what's the worst that can happen?": [5, ["Mars"]],
-            "Lovers Quarrel: You consider the fact that you might ruin your relationship with either one, so you leave it alone.": [5, ["Uranus"]],
-            "High thinker: You believe that it won't escalate too far, so you leave them be.": [5, ["Jupiter"]],
-            "Friendly Teacher: You break the fight and lecture them.": [5, ["Venus"]],
+            "hide away your valuables: you will need as much as you can keep with you for you and your family. if it's just you breaking the rules then it shouldn't be that much of a detriment to have a few extra tens of pounds on the boat, right?": [5, ["Never Left"]],
+            "keep your gold and jewlery: when you sell these overseas you can buy more essentials later or maybe you can trade with people on the boat in the mean time. though you have been warned that pirates have been spotted and it may be for nought if your vessel gets raided and you lose these.": [5, ["Perished on the Way"]],
+            "keep just what is needed to survive the journey: whats the use of anything else if you can't even survive the journey over? ": [5, ["Bitter Sweet"]],
+            "throw away everything: the captain has already taken many extra people. this is for the good of everyone around you, even if it means you have nothing but your papers left with you, you must do all you can for the common good.": [5, ["Left with Nothing"]],
         },
         "image": "images/question_4.jpg"
     },
 
     // question 5
     "5": {
-        "question_text": "While everyone is sleeping, you notice something unfamiliar coming your way. What do you do?",
+        "question_text": "pirates are closing in and you must act quickly. the decision is not yours but what do you think is the best course of action in the face of such a harrowing encounter.",
         "question_choices": {
-            "Don't Care: You ignore it, worst case scenario it makes a small dent.": [6, ["Jupiter"]],
-            "Crying Wolf: You run to the others, relying on them to know what to do.": [6, ["Uranus"]],
-            "Curious George: You move the ship forward, you have to know what it is.": [6, ["Mars"]],
-            "Teach me: You wake the others, out of hopes they can teach you what it is.": [6, ["Venus"]],
+            "fight back: salvage what weapons you have and bits of the ship and prepare for an attack. ": [6, ["Never Left"]],
+            "hide on the boat: perhaps there are some good hiding spots on the ship that at least a few people can fit into. the pirates are probably thorough in searching the ship however.": [6, ["Perished on the Way"]],
+            "jump into the ocean: you are quite literally a sitting duck but hopefully the pirates see you as too much of a hassle to care for. all that's left is to survive swimming in the ocean.": [6, ["Bitter Sweet"]],
+            "give them everything: if you give them everything then maybe they will leave you in peace.": [6, ["Left with Nothing"]],
         },
         "image": "images/question_5.avif"
     },
 
     // question 6
     "6": {
-        "question_text": "You and your team finally land on an unknown planet. What is the first thing you do?",
+        "question_text": "you've managed to survive but only after giving up on everyone's valuables. your attackers were 'kind' enough to leave you unharmed with the clothes on your backs. now is the question of how you can continue living despite the lack of any essentials. a kind soul has offered you some raw seagull meat.",
         "question_choices": {
-            "Observing Nerd: You immediately look and observe, analyzing the dust, temperature, etc.": [7, ["Venus"]],
-            "Buddy System: Grab a partner! You can't explore without experiencing it with somebody. Makes it more enjoyable.": [7, ["Uranus"]],
-            "Priorities: You have to explore every inch, what if there are aliens on planet?": [7, ["Jupiter"]],
-            "Faster: You run off, the thought of everything being unknown thrills you to the bone.": [7, ["Mars"]],
+            "starve: the options are either nothing or raw seagull. you'd much rather wait until you are able to touch land again(if you can make it)": [7, ["Never Left"]],
+            "search for something else: fish is hard to come by as you lack tools after the raid and the boat must constantly be heading to the next destination. for you, it might be worth the wait to either find something the pirates forgot or see if fishing yields results.": [7, ["Perished on the Way"]],
+            "eat your shoe: the quickest option is to eat anything you had of leather, like a shoe. its tasteless and tough but at least it's safer than most options": [7, ["Bitter Sweet"]],
+            "eat the bird: raw meat is better than starvation. better to deal with the consequences of eating raw meat than continue starving.": [7, ["Left with Nothing"]],
         },
         "image": "images/question_6.jpg"
     },
 
     // question 7
     "7": {
-        "question_text": "During your adventure on this new planet, you get lost. How do you feel?",
+        "question_text": "you have made it to a refugee camp. not quite your destination and the conditions are dire but safer and more comfortable compared to the seas. you start to think to yourself, would it be so bad to stay here?",
         "question_choices": {
-            "Who Cares: You'll find them eventually.": [8, ["Jupiter"]],
-            "Tunnel Vision: This marking on this rock is too fascinating.": [8, ["Venus"]],
-            "Solo: Awesome, the thought of being alone excites you.": [8, ["Mars"]],
-            "Help!: You're absolutely terrified. who knows what's around here?!": [8, ["Uranus"]],
+            "stay in the camps: it's been a traumatic journey and you are ready to collapse. perhaps you could settle for this kind of life if it meant you didn't have to make anymore hard choices.": [8, ["Never Left"]],
+            "fake papers: someone can forge papers for you and your family to stay together. you'd risk a still more dangerous journey and even then still have potential to be deported.": [8, ["Perished on the Way"]],
+            "split family: while waiting in the camps, not all of your family gets a visa. is it worth splitting up your family to allow some members to go to a better life while leaving others behind.": [8, ["Bitter Sweet"]],
+            "get yourself out: it's not a decision you like making but as quickly as you can you need to get out of here. maybe once you get your visa you can work on helping the rest of your family later.": [8, ["Left with Nothing"]],
         },
         "image": "images/question_7.jpg"
     },
-    
-    // question 8
-    "8": {
-        "question_text": "After about an hour, you're still alone and have encountered a liquid that appears to look like water. What do you do?",
-        "question_choices": {
-            "Patience is Key: You would rather wait until you have fully deduced if it's ok to drink it or not.": [9, ["Venus"]],
-            "Lets do it: The thought of the unknown intruiges you. You take a sip.": [9, ["Mars"]],
-            "Partnership!: Thirstiness is not important, finding someone is. ": [9, ["Uranus"]],
-            "Why not: It looks close enough, lets try it.": [9, ["Jupiter"]],
-        },
-        "image": "images/question_8.jpg"
-    },
-
-    // question 9
-    "9": {
-        "question_text": "Some time goes by and you finally found your peers. How did you find them?",
-        "question_choices": {
-            "Mapper: You found them through your own deduction skills.": [10, ["Venus"]],
-            "Isolation: You sat in place until someone found you.": [10, ["Uranus"]],
-            "Oh well: Random chance. You knew you'd find them eventually.": [10, ["Jupiter"]],
-            "Random Chance: You were adventuring randomly and just happened to encounter them.": [10, ["Mars"]],
-        },
-        "image": "images/question_9.webp"
-    },
-
-    // question 10
-    "10": {
-        "question_text": "It's time to head back to the ship. What would be your regret?",
-        "question_choices": {
-            "Memorable thoughts: That you didn't get to write down every thought you had.": [0, ["Venus"]],
-            "Unseen: How you wish you could've used this chance to bond with everyone more.": [0, ["Uranus"]],
-            "New beginnings: No regrets, everything will come to happen anyways. ": [0, ["Jupiter"]],
-            "Thriller: To explore more. ": [0, ["Mars"]],
-        },
-        "image": "images/question_10.jpg"
-    },
 }
 
-// photos for each planet
-const planetPhotos = {
-    "Mars": [
-      { src: "images/mars_alien_one.webp", description: "Name: Glixeen\n\n     Age: 22,814,912\n\n    Bio: Likes to hunt glerbs and play with fiphors." },
-      { src: "images/mars_alien_two.webp", description: "Name: Xarblip\n\n      Age: 1,124,589\n\n     Bio: Loves to glibblish around crinkly comets and snorfles nacho nebula bits." },
-      { src: "images/mars_alien_three.webp", description: "Name: Zorblink\n\n     Age: 3,245,698\n\n     Bio: Enjoys sprockling through space dust and flomping with giggle-sized glorpberries." }
-    ],
-    "Venus": [
-      { src: "images/venus_alien_one.webp", description: "Name: Zylara\n\n     Age: 2,983,204\n\n     Bio: Passionate about flimpling cosmic candy and slorping on rainbow asteroid sprinkles."},
-      { src: "images/venus_alien_two.webp", description: "Name: Merin\n\n     Age: 10,378,229\n\n    Bio: Delights in twinkling through meteor showers and shuffling zany stardust confetti."},
-      { src: "images/venus_alien_three.webp", description: "Name: Aqualis\n\n    Age: 289,209,100\n\n   Bio: Famous for glibbing through interstellar bubble clouds and whirligigging funky plasma spritz."}
-    ],
-    "Jupiter": [
-      { src: "images/jupiter_alien_one.webp", description: "Name: Voltrax\n\n    Age: 908,388,299\n\n   Bio: Reowned for shnazzling through space caverns and crinkling wildly with cosmic confetti."},
-      { src: "images/jupiter_alien_two.webp", description: "Name: Draxen\n\n     Age: 46,290,344\n\n    Bio: Thrives on splinking rogue meteors and glomping unknown particles with a joyful zing."},
-      { src: "images/jupiter_alien_three.webp", description: "Name: Lexor\n\n      Age: 20,332,764\n\n    Bio: Often seen flurbling across the Milky Way and bamboozling graviton gabbers."}
-    ],
-    "Uranus": [
-      { src: "images/uranus_alien_one.png", description: "Name: Vynora\n\n     Age: 88,294,211\n\n    Bio: Loves to niffle through surreal starlight and bebop around with snizzle-spritzed comets."},
-      { src: "images/uranus_alien_two.webp", description: "Name: Rilanea\n\n    Age: 8,124,288\n\n     Bio: Has a quirky habit of flabbergasting meteorites and zibbering along quirky cosmic avenues."},
-      { src: "images/uranus_alien_three.webp", description: "Name: Xyrissa\n\n    Age: 199,818,228\n\n   Bio: Expert at quorfing light-year laughs and splitering the mundane with a zany twist in zero-G."}
-    ]
-  };
+
   
 
         
